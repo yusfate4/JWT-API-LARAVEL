@@ -29,8 +29,19 @@ Route::group(
         Route::post('/login', [AuthController::class, 'login']);
         Route::get('/profile', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::middleware('auth:api')->group(function () {
-            Route::post('refresh', 'AuthController@refresh');
+
+
+        Route::middleware(['auth:api', 'checkRole:admin'])->group(function () {
+            // Routes accessible only to admin
+            Route::get('/admin-dashboard', [AuthController::class, 'adminDashboard']);
         });
+
+        Route::middleware(['auth:api', 'checkRole:user'])->group(function () {
+            // Routes accessible only to users
+            Route::get('/user-profile', 'UserController@profile');
+            Route::get('/user-profile', [AuthController::class, 'userProfile']);
+        });
+
+
     }
 );

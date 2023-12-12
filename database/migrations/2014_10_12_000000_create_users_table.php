@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            // Add the role column
+            $table->string('role')->default('user'); // Default role is 'user'
         });
     }
 
